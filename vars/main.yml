@@ -1,0 +1,46 @@
+---
+
+_additional_packages:
+  default:
+    - bind9utils
+    - tzdata
+    - bash-completion
+  debian:
+    - bind9utils
+    - bash-completion
+  redhat:
+    - bind-utils
+  fedora:
+    - bind-utils
+
+_unneeded_services:
+  default:
+    - multipathd.service
+    - snapd.seeded.service
+    - snapd.service
+    - systemd-resolved.service
+    - snap.lxd.daemon.unix.socket
+    - snapd.socket
+    - iscsid.socket
+  debian:
+    - multipathd.service
+    - snapd.seeded.service
+    - snapd.service
+    - systemd-resolved.service
+    - snap.lxd.daemon.unix.socket
+    - snapd.socket
+    - iscsid.socket
+
+  redhat:
+  - rpcbind
+  - rpcbind.socket
+
+common_additional_packages: "{{ _additional_packages[ansible_distribution | lower ~ '-' ~ ansible_distribution_major_version ] |
+  default(_additional_packages[ansible_distribution | lower ~ '-' ~ ansible_distribution_major_version] |
+  default(_additional_packages[ansible_distribution | lower] |
+  default(_additional_packages['default']))) }}"
+
+common_unneeded_services: "{{ _unneeded_services[ansible_distribution | lower ~ '-' ~ ansible_distribution_major_version ] |
+  default(_unneeded_services[ansible_distribution | lower ~ '-' ~ ansible_distribution_major_version] |
+  default(_unneeded_services[ansible_distribution | lower] |
+  default(_unneeded_services['default']))) }}"

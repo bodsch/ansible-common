@@ -1,0 +1,11 @@
+---
+
+additional_packages:
+  - unzip
+  - bind-utils
+
+unneeded_services:
+  - rpcbind
+  - rpcbind.socket
+
+timezone: Etc/UTC

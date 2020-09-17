@@ -1,0 +1,13 @@
+---
+
+common_timezone: Etc/UTC
+
+common_disable_ipv6: true
+
+common_default_packages:
+  - git
+  - unzip
+  - bzip2
+  - fontconfig
+
+common_custom_hosts: []

@@ -1,0 +1,20 @@
+---
+
+_additional_packages:
+  default:
+    - unzip
+    - bind9utils
+    - tzdata
+
+_unneeded_services:
+  - multipathd.service
+  - snapd.seeded.service
+  - snapd.service
+  - systemd-resolved.service
+  - snap.lxd.daemon.unix.socket
+  - snapd.socket
+  - iscsid.socket
+
+timezone: Europe/Berlin
+
+

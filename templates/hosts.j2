@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+
+127.0.0.1 {{ inventory_hostname }} {{ inventory_hostname_short }}
+
+# Network nodes as generated through Ansible.
+{% for host in play_hosts %}
+{% if 'ansible_default_ipv4' in hostvars[host] %}
+{{ hostvars[host].ansible_default_ipv4.address }}  {{ host }}
+{% endif %}
+{% endfor %}
+
+{% if common_custom_hosts is defined and common_custom_hosts | count != 0 -%}
+# custom nodes
+{% for h in common_custom_hosts -%}
+{% if h.description is defined -%}
+# {{ h.description }}
+{% endif -%}
+{{ h.ip }}  {{ h.names | join(' ' ) }}
+{% endfor -%}
+{% endif %}
