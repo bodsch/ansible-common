@@ -10,6 +10,11 @@
 #     - "{{ ansible_os_family | lower }}.yml"
 #     - "default.yml"
 
+- name: update apt cache
+  apt:
+    update_cache: true
+  when: ansible_os_family | lower == 'debian'
+
 - name: ensure additional packages are installed
   package:
     name: "{{ common_additional_packages }}"
@@ -22,20 +27,17 @@
 
 - name: disable IPv6
   copy:
-    # state: present
     dest: /etc/sysctl.d/10-disable-ipv6.conf
     mode: 0640
     content: |
       net.ipv6.conf.all.disable_ipv6 = 1
   when: common_disable_ipv6
 
-- include_tasks: fqdn.yml
-
-- name: set timezone to {{ timezone }}
+- name: set timezone to {{ common_timezone }}
   # become: true
   timezone:
     name: "{{ common_timezone }}"
-  # no_log: true
+  no_log: true
   ignore_errors: true
 
 - name: Make sure Ansible local facts directory exists
@@ -46,14 +48,24 @@
     group: 'root'
     mode: '0755'
 
-
-- name: add subdomains to /etc/hosts
+- name: update /etc/bash.bashrc
   template:
-    src: templates/hosts.j2
-    dest: /etc/hosts
-  when: custom_hosts is defined and custom_hosts | count != 0
+    src: bash.bashrc.j2
+    dest: /etc/bash.bashrc
+    mode: 0640
+  when: ansible_os_family | lower == 'debian'
 
 - name: update /root/.bash_profile
   template:
     src: bash_profile.j2
     dest: /root/.bash_profile
+    mode: 0640
+
+- name: add subdomains to /etc/hosts
+  template:
+    src: templates/hosts.j2
+    dest: /etc/hosts
+    mode: 0640
+  when: custom_hosts is defined and custom_hosts | count != 0
+
+# - include_tasks: fqdn.yml
