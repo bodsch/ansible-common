@@ -55,6 +55,12 @@
     mode: 0644
   when: ansible_os_family | lower == 'debian'
 
+- name: update /etc/skel/.bashrc
+  template:
+    src: skel_bashrc.j2
+    dest: /etc/skel/.bashrc
+    mode: 0644
+
 - name: update /root/.bash_profile
   template:
     src: bash_profile.j2
