@@ -6,13 +6,13 @@
   roles:
     - role: common
 
-  # pre_tasks:
-  #   - debug:
-  #       var: "{{ item }}"
-  #     when: item is defined
-  #     loop:
-  #       - ansible_os_family
-  #       - ansible_distribution
-  #       - ansible_lsb.codename
-  #       - ansible_lsb.major_release
-  #       - ansible_distribution_major_version
+  pre_tasks:
+    - debug:
+        var: "{{ item }}"
+      when: item is defined
+      loop:
+        - ansible_os_family
+        - ansible_distribution
+        - ansible_lsb.codename
+        - ansible_lsb.major_release
+        - ansible_distribution_major_version

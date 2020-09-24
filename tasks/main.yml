@@ -3,7 +3,24 @@
 - name: update apt cache
   apt:
     update_cache: true
+  ignore_errors: true
   when: ansible_os_family | lower == 'debian'
+
+- block:
+
+    - name: update yum cache
+      yum:
+        update_cache: true
+      ignore_errors: true
+      when: ansible_distribution_major_version | int <= 7
+
+    - name: update dnf cache
+      dnf:
+        update_cache: true
+      ignore_errors: true
+      when: ansible_distribution_major_version | int >= 8
+
+  when: ansible_os_family | lower == 'redhat'
 
 - name: ensure additional packages are installed
   package:
@@ -32,11 +49,11 @@
 
 - name: Make sure Ansible local facts directory exists
   file:
-    dest: '/etc/ansible/facts.d'
-    state: 'directory'
-    owner: 'root'
-    group: 'root'
-    mode: '0755'
+    dest: /etc/ansible/facts.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
 
 - name: update /etc/bash.bashrc
   template:
@@ -61,7 +78,7 @@
   template:
     src: templates/hosts.j2
     dest: /etc/hosts
-    mode: 0640
-  when: custom_hosts is defined and custom_hosts | count != 0
+    mode: 0644
+#  when: custom_hosts is defined and custom_hosts | count != 0
 
 - include_tasks: fqdn.yml

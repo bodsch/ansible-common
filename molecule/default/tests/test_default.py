@@ -23,7 +23,10 @@ def test_directories(host, dirs):
 
 
 @pytest.mark.parametrize("files", [
-    "/root/.bash_profile"
+    "/root/.bash_profile",
+    "/etc/bash.bashrc",
+    "/etc/skel/.bashrc",
+    "/etc/sysctl.d/10-disable-ipv6.conf"
 ])
 def test_files(host, files):
     f = host.file(files)
