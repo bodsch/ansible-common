@@ -7,7 +7,6 @@
   when: ansible_os_family | lower == 'debian'
 
 - block:
-
     - name: update yum cache
       yum:
         update_cache: true
@@ -74,11 +73,11 @@
     dest: /root/.bash_profile
     mode: 0640
 
-- name: add subdomains to /etc/hosts
-  template:
-    src: templates/hosts.j2
-    dest: /etc/hosts
-    mode: 0644
-#  when: custom_hosts is defined and custom_hosts | count != 0
+# - name: add subdomains to /etc/hosts
+#   template:
+#     src: templates/hosts.j2
+#     dest: /etc/hosts
+#     mode: 0644
+# #  when: custom_hosts is defined and custom_hosts | count != 0
 
 - include_tasks: fqdn.yml

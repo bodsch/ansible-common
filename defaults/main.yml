@@ -9,5 +9,6 @@ common_default_packages:
   - unzip
   - bzip2
   - fontconfig
+  - dnsutils
 
 common_custom_hosts: []
