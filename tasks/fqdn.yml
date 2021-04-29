@@ -1,7 +1,6 @@
 ---
 
 - block:
-
     - name: 'update the hostname (pt. 1) - hostname cmd'
       become: true
       ignore_errors: true
@@ -16,7 +15,7 @@
       shell: |
         hostnamectl set-hostname {{ inventory_hostname }} --static
       when:
-        ansible_service_mgr == 'systemd'
+        - ansible_service_mgr == 'systemd'
 
     - name: 'update the hostname (pt. 3) - (/etc/hostname)'
       become: true
@@ -40,7 +39,8 @@
         mode: 0644
       register:
         __hostname_changed_4
-      when: ansible_os_family | lower == 'redhat'
+      when:
+        - ansible_os_family | lower == 'redhat'
 
     - name: "reboot server for enable fqdn"
       shell: sleep 2 && reboot

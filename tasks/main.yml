@@ -4,7 +4,8 @@
   apt:
     update_cache: true
   ignore_errors: true
-  when: ansible_os_family | lower == 'debian'
+  when:
+    - ansible_os_family | lower == 'debian'
 
 - block:
     - name: update yum cache
@@ -19,7 +20,8 @@
       ignore_errors: true
       when: ansible_distribution_major_version | int >= 8
 
-  when: ansible_os_family | lower == 'redhat'
+  when:
+    - ansible_os_family | lower == 'redhat'
 
 - name: ensure additional packages are installed
   package:
@@ -37,7 +39,8 @@
     mode: 0640
     content: |
       net.ipv6.conf.all.disable_ipv6 = 1
-  when: common_disable_ipv6
+  when:
+    - common_disable_ipv6
 
 - name: set timezone to {{ common_timezone }}
   # become: true
@@ -59,7 +62,8 @@
     src: bash.bashrc.j2
     dest: /etc/bash.bashrc
     mode: 0644
-  when: ansible_os_family | lower == 'debian'
+  when:
+    - ansible_os_family | lower == 'debian'
 
 - name: update /etc/skel/.bashrc
   template:
@@ -72,12 +76,5 @@
     src: bash_profile.j2
     dest: /root/.bash_profile
     mode: 0640
-
-# - name: add subdomains to /etc/hosts
-#   template:
-#     src: templates/hosts.j2
-#     dest: /etc/hosts
-#     mode: 0644
-# #  when: custom_hosts is defined and custom_hosts | count != 0
 
 - include_tasks: fqdn.yml
