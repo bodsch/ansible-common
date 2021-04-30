@@ -18,6 +18,7 @@ rules:
 ignore: |
   tests/
   molecule/
+  .github/
   .molecule/
   .travis.yml
   .tox
