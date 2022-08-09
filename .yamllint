@@ -16,7 +16,6 @@ rules:
   comments-indentation: disable
   truthy: disable
 
-
 ignore: |
   tests/
   molecule/
